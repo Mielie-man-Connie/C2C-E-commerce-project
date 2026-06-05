@@ -1,0 +1,304 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+ 
+/* Global design tokens */
+:root {
+    color-scheme: light;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
+ 
+/* Global reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ 
+/* Base page layout */
+html, body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 0;
+    min-height: 100%;
+}
+ 
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: #000;
+}
+ 
+/* Full-screen painted background */
+.page-bg {
+    position: fixed;
+    inset: 0;
+    background-image: url('../img/PaintBg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: saturate(0.95) brightness(0.9);
+    z-index: -2;
+}
+ 
+.page-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.25), transparent 35%),
+                linear-gradient(180deg, rgba(9, 10, 24, 0.24), rgba(9, 10, 24, 0.55));
+}
+ 
+/* Slide-in auth panel */
+.panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(42vw, 520px);
+    max-width: 560px;
+    margin: 0;
+    padding: 2rem 2.2rem 2.4rem;
+    background: var(--ghost-white);
+    border: 1px solid rgba(102, 97, 88, 0.12);
+    border-radius: 48px 0 0 48px;
+    box-shadow: -24px 0 80px rgba(12, 18, 40, 0.18);
+    backdrop-filter: blur(18px);
+    overflow: hidden;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.45s ease, opacity 0.45s ease;
+}
+ 
+.panel.visible-block,
+.panel.slide-back {
+    transform: translateX(0);
+    opacity: 1;
+}
+ 
+.panel.slide-away {
+    transform: translateX(120%);
+    opacity: 0;
+}
+ 
+/* Language switcher section */
+.language-switcher {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+    z-index: 10;
+    position: relative;
+}
+ 
+.language-switcher select {
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(51, 51, 51, 0.15);
+    background: var(--timberwolf-gray);
+    color: #222;
+    font-size: 0.95rem;
+    outline: none;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+ 
+.language-switcher select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.18);
+}
+ 
+/* Content wrapper inside the panel */
+.panel-content {
+    position: relative;
+    height: 100%;
+    min-height: 100%;
+    padding-bottom: 0.5rem;
+    overflow-y: auto;
+}
+ 
+/* Login/register card styling */
+.form-card {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.4rem;
+    padding-top: 0.2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+ 
+.form-card.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+ 
+.panel.slide-away .form-card.visible {
+    opacity: 0;
+}
+ 
+.panel.slide-back .form-card.visible {
+    opacity: 1;
+}
+ 
+/* Card title styling */
+.form-card h2 {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    color: #141924;
+}
+ 
+/* Error Message Box */
+.error-messages {
+    background: rgba(220, 53, 69, 0.08);
+    border: 1px solid rgba(220, 53, 69, 0.35);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+ 
+.error-messages p {
+    margin: 0;
+    color: #b91c1c;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+ 
+.error-messages p::before {
+    content: '⚠ ';
+}
+ 
+/* Input List */
+.input-group {
+    display: grid;
+    gap: 1rem;
+}
+ 
+.input-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.4rem .3rem;
+    background: var(--timberwolf-gray);
+    border: 2px solid rgba(129, 119, 103, 0.4);
+    border-radius: 18px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+.input-row:focus-within {
+    border-color: rgba(20, 144, 121, 0.55);
+    box-shadow: 0 0 0 3px rgba(20, 144, 121, 0.1);
+}
+ 
+/* Icon Label Bubble */
+.input-row label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 12px;
+    background: var(--timberwolf-gray);
+}
+ 
+.input-row img {
+    display: flex;
+    flex-shrink: 0;
+    width: 40px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--dark-teal-green), var(--muted-teal));
+    border-radius: 12px 2px 2px 12px;
+    fill: var(--timberwolf-gray);
+    color: var(--timberwolf-gray);
+    justify-content: center;
+    align-items: center;
+    font-size: .5rem;
+    font-weight: 500;
+}
+ 
+.input-row input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #1e2635;
+    font-size: 1rem;
+    outline: none;
+    min-height: 2.4rem;
+}
+ 
+.input-row input::placeholder {
+    color: var(--timberwolf-gray);
+}
+ 
+/* Button styling */
+button {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+ 
+button.primary {
+    padding: 0.95rem 1rem;
+    width: 40%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #149079, rgb(8, 102, 85));
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 18px 35px rgba(67, 100, 255, 0.18);
+}
+ 
+button.primary:hover,
+button.primary:focus-visible {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #157261, #0c3633);
+    box-shadow: 0 22px 40px rgba(67, 100, 255, 0.24);
+}
+ 
+button.link {
+    margin-top: 0.2rem;
+    color: #096655;
+    background: transparent;
+    text-decoration: underline;
+    font-size: 0.96rem;
+    font-weight: 600;
+}
+ 
+button.link:hover,
+button.link:focus-visible {
+    color: #054237;
+}
+ 
+/* Responsive adjustments */
+@media (min-width: 1080px) {
+    body {
+        display: block;
+    }
+ 
+    .panel {
+        width: min(42vw, 520px);
+        border-radius: 48px 0 0 48px;
+    }
+}
+ 
+@media (max-width: 720px) {
+    .panel {
+        width: min(96vw, 520px);
+        border-radius: 0;
+    }
+ 
+    .panel-content {
+        min-height: 100%;
+    }
+}
